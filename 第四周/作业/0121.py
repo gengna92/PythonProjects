@@ -83,11 +83,12 @@ def regis(username,password):
 def showPage(num):
     print('欢迎%s用户访问%s'%(currentUser,lis[num-1]))
 
-
+#注销
 def logout():
     global loginFlag
     print('注销成功')
     loginFlag = False
+    currentUser = ""
 
 
 if __name__ == '__main__':
