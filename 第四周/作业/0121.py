@@ -10,7 +10,7 @@ def logWrapper(fn):
     @wraps(fn)
     def inner(*args,**kwargs):
         struct_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
-        s='用户:'+ currentUser + '在'+ struct_time+ '执行了'+fn.__name__+'函数\n'
+        s='用户:'+ currentUser + '  在'+ struct_time+ '执行了   '+fn.__name__+'函数\n'
 
         with open('log.txt',mode= 'a',encoding= 'utf-8') as f:
             f.write(s)
@@ -31,12 +31,13 @@ def loginWrapper(fn):
             print('您还未登录，请先登录！')
     return inner
 
+#首页
 def firstPageShow():
     print('欢迎来到博客园首页')
     for i in range(len(lis)):
         print('%s:%s'%(i+1,lis[i]))
 
-
+#登录
 def login(username,password):
     global currentUser,loginFlag
     with open('register.txt',mode='r',encoding='utf-8') as f:
@@ -49,7 +50,7 @@ def login(username,password):
                 return True
     print('账号或密码错误')
 
-
+#校验账号是否注册
 def checkAccount(username):
 
     try:
@@ -85,30 +86,37 @@ def showPage(num):
 
 #注销
 def logout():
-    global loginFlag
-    print('注销成功')
+    global loginFlag,currentUser
     loginFlag = False
-    currentUser = ""
+    currentUser = ''
 
 
 if __name__ == '__main__':
     while 1:
         firstPageShow()
-        num = int(input("请输入您的选择：").strip())
+        try:
+            num = int(input("请输入您的选择：").strip())
+        except ValueError:
+            print("输入格式有误，请重新输入")
+            continue
+
         if num < 1 or num > 8:
             print("请输入正确的选择")
             continue
 
         elif num ==  7:
-            loginFlag = False
-            currentUser = ""
-            print('注销成功')
+            logout()
 
         elif num ==  8:
             print('退出程序')
             break
 
         elif num == 2:
+
+            # 用户登录时，选择注册，首先注销当前用户登录
+            if loginFlag:
+                logout()
+
             username = input('请输入注册用户名：').strip()
             password = input('请输入注册密码：').strip()
 
@@ -117,13 +125,18 @@ if __name__ == '__main__':
 
         elif num == 1:
             i = 0
+            #用户登录时，再次点击登录，退出当前用户登录，重新登录
+            if loginFlag:
+                logout()
+
+
             while loginFlag == False and i < 3:
                 username = input('请输入登录用户名：').strip()
                 password = input('请输入登录密码：').strip()
                 if login(username,password):
                     break
                 i += 1
-            print(loginFlag)
+
             if loginFlag:
                 continue
 
