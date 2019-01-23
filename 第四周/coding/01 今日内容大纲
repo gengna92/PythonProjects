@@ -1,0 +1,178 @@
+一. 上节课内容回顾
+    1. 文件操作
+        open(路径, 模式, 编码)
+        路径:
+            1. 绝对
+                从磁盘根目录
+                d:/abc/sylar.txt
+            2. 相对
+                ../abc/火影.txt
+        模式
+            r  只读.
+            w  只写. 清空源文件
+            a  追加.
+            r+  读写
+            w+  写读
+            a+  追加写读
+
+            操作非文本文件. 不需要encoding
+            rb
+            wb
+            ab
+
+        光标:
+            f.seek(0)
+            f.seek(0,2)
+
+            f.tell() 获取光标位置
+
+        import os
+
+        with open() as f1, \
+            open() as f2:
+            修改
+
+        os.remove(f1)
+        os.rename(f2, f1)
+    2.函数
+        定义: 对功能或动作的封装
+        语法:
+            def 函数名(形参):
+                函数体(return)
+
+            函数名(实参)
+
+        形参: 函数定义的时候的变量
+            1. 位置
+            2. 默认值参数
+            3. 动态传参
+                1. *args  接收位置参数的动态传参
+                2. **kwargs 关键字的.......
+
+            def func(*args, **kwargs):
+                pass
+
+            顺序(重要): 位置  *args  默认值  **kwargs
+
+            *和**:
+                1. 在形参表示聚合
+                2. 在实参表示打散
+        实参: 在函数调用的时候. 给函数传递的数据
+            1. 位置
+            2. 关键字
+            3. 混合 先位置后关键字
+
+
+        返回值:
+            return : 如果函数执行到return. 函数一定会停止
+            1. 如果函数什么都不写,不写return. 默认返回None
+            2. return 值. 一个返回值
+            3. return  值1, 值2, 值3...
+
+    名称空间
+        1. 内置
+        2. 全局(一个模块)
+        3. 局部:函数内部.
+    作用域
+        1. 全局: 内置+全局
+        2. 局部: 局部
+
+        1. globals() 查看全局作用域中的变量
+        2. locals()  查看当前作用域中的变量
+
+
+        global   把全局变量引入到局部
+        nonlocal 在局部. 把离它最近的外层函数的变量引入到内层函数
+
+
+
+
+二. 今日主要内容
+    1. 函数名
+        函数本质就是一个内存地址. 用起来和变量一模一样
+
+
+    2. 闭包
+        内层函数对外层变量的使用
+        1. 保护变量
+        2. 让一个变量常驻内存
+
+
+    3. 迭代器
+        可迭代对象: __iter__
+        迭代器: __iter__ __next__
+        from collections import Iterable, Iterator
+        isinstance(对象, Iterable)
+        isinstance(对象, Iterator)
+
+        模拟for循环:
+            lst = []
+            it = lst.__iter__()
+            while 1:
+                try:
+                    el = it.__next__()
+                except StopIteration:
+                    break
+        list() => for => __iter__() __next__()
+
+    4. 生成器
+        本质就是迭代器
+            1. 节省内存
+            2. 惰性机制
+            3. 只能向前
+
+        生成器函数. 包含yield
+        yield: 把一个函数变成生成器函数. 也可以返回结果但是函数不会终止. 分段执行一个函数
+        return: 结束函数的调用. 返回结果
+
+        生成器保存的是代码
+
+        send() 给上一个yield位置传值
+    5. 各种推导式
+        列表推导式 [结果 for循环 if判断]
+        字典推导式
+        集合推导式
+    6. 生成器表达式
+        (结果 for循环 if条件)
+        面试题(挑战一下)
+
+    7. 内置函数
+        exec
+        eval
+        compile
+        可以动态执行字符串类型的代码
+
+        匿名函数:  lambda 参数: 返回值
+        sorted()  排序
+        filter()  筛选
+        map() 映射
+
+        callable() 判断是否可以被调用  ()
+
+    8. 装饰器
+        可以在不改变原来的代码的基础上给函数添加新的功能
+        通用装饰器
+        def wrapper(fn):
+            def inner(*args, **kwargs):
+                '''之前'''
+                ret = fn(*args, **kwargs)
+                '''之后'''
+                return ret
+            return inner
+
+        @wrapper
+        def func():
+            pass
+
+        func()
+
+    9. 递归
+        函数自己调用自己
+        官方网站上给的递归最大深度是1000
+        你测试也就是998, 997
+
+    大概的预习方向:
+        1. 二分法
+        2. 面试题
+        3. 模块 re, json, pickle, time, random, collections, queue
+
