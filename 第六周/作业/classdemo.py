@@ -99,7 +99,7 @@ class ADMIN(PUBLIC):
 
     #添加管理员
     def createAdmin(self, name, password):
-        with open('admin.txt', mode='w+') as f:
+        with open('admin.txt', mode='r+') as f:
             for line in f:
                 acc, word = line.strip().split(":")
                 if name == acc:
