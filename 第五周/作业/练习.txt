@@ -1,0 +1,99 @@
+
+# 练习题：
+# 1.计算两个格式化时间之间差了多少年月日时分秒；
+
+time1 = "2019-02-21 10:12:15"
+time2 = "2019-01-21 10:11:14"
+
+data = abs( time.mktime(time.strptime(time1,"%Y-%m-%d %H:%M:%S")) -time.mktime(time.strptime(time2,"%Y-%m-%d %H:%M:%S")))
+
+year = data//31536000
+month = (data%31536000)//2592000
+day = ((data%31536000)%2592000)//86400
+hour = (data%86400)//3600
+minute =  (data%3600)//60
+seconds = data % 60
+print('两个格式化时间相差：%s年%s月%s日%s时%s分%s秒'%(year,month,day,hour,minute,seconds))
+
+
+# 2.计算当前时间所在月1号的时间戳；
+struct_time =time.localtime()
+time1 = time.strptime(time.strftime("%Y-%m",struct_time)+"-1 00:00:00","%Y-%m-%d %H:%M:%S")
+timestamp = time.mktime(time1)
+
+print(timestamp)
+
+
+# 3.生成一个6位随机校验码（包含数字和大小写字母);
+import random
+lst = [chr(i) for i in range(65,91)] + [chr(i) for i in range(97,123)] + [ str(i) for i in range(10)]
+print(random.sample(lst,6))
+
+# 4.发红包、制定金额和个数随机分配红包金额；
+import random
+num = 5
+funds = 10
+lst = []
+for i in  range(num):
+    item = round(random.uniform(0,funds),2)
+    if i + 1 == num:
+        lst.append(round(funds,2))
+
+    else:
+        lst.append(item)
+        funds -= item
+
+print(lst)
+
+
+# 5.分别列出给定目录下所有的文件和文件夹；
+import os                                        
+def getDir(path):                                
+    dir_list = os.listdir(path)                  
+    for item in dir_list:                        
+        itemPath = os.path.join(path, item)      
+        if os.path.isdir(itemPath):              
+            print("目录："+ item)                   
+            itemPath = os.path.join(path,item)   
+            getDir(itemPath)                     
+        elif os.path.isfile(itemPath):           
+             print("文件："+ item)                  
+
+
+# 6.获取当前文件所在的目录；
+import os
+os.getcwd()
+
+# 7.在当前目录下创建一个文件夹，在这个文件夹下创建一个文件；
+import os
+os.mkdir("test")
+os.chdir(os.getcwd()+'\\test')
+f = open('aaa.txt',mode = "w")
+f.close()
+
+
+# 8.计算某路径下所有文件和文件夹的总大小；
+import os
+#定义文件size列表
+dirSize = []
+
+def getDir(path):
+    dir_list = os.listdir(path)
+    for item in dir_list:
+        itemPath = os.path.join(path, item)
+
+#如果是目录，递归查找		
+        if os.path.isdir(itemPath):
+            print("目录："+ item)
+            getDir(itemPath)
+
+#如果是文件，获取文件的大小			
+        elif os.path.isfile(itemPath):
+             print(os.path.getsize(itemPath))
+             dirSize.append(os.path.getsize(itemPath))
+             print("文件："+ item)
+    return sum(dirSize)
+
+
+path = "F:\coding\cbibBank"
+print(getDir(path))
