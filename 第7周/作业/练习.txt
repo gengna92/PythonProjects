@@ -1,0 +1,146 @@
+1、new方法和init方法执行的执行顺序
+实例化对象的时候，先调用new方法开辟内存空间，在调用init方法初始化
+
+2、call方法在什么时候被调用
+实例对象被调用的时候，实例对象可以像函数一样作为可调用对象进行使用
+
+3、请用写一个类，用反射为这个类添加一个静态属性
+class ANIMAL:
+    def __init__(self,name):
+        self.name = name
+    @property
+    def run(self):
+        print(self.name ,'is running')
+        return 1
+
+if __name__== "__main__":
+    cat = ANIMAL("cat")
+    if not hasattr(cat,'color'):
+        setattr(cat,'color','yellow')
+
+    print(getattr(cat,"color"))
+    print(getattr(cat,"name"))
+    print(getattr(cat,"run"))
+	
+4、请用反射为上题的类的对象添加一个属性name,值为你的名字
+同题3
+
+5、请使用new方法实现一个单例模式
+class SINGLEINSTANCE:
+    _singleton = None
+    def __new__(cls, *args, **kwargs):
+        if not cls._singleton:
+            cls._singleton = object.__new__(cls,*args.**kwargs)
+            return cls._singleton
+
+
+6、校验两个文件的一致性
+import hashlib
+def checkMd5(filename):
+    with open(filename,mode = 'r',encoding='utf-8') as f:
+        obj = hashlib.md5(b"checkmd5")
+        for line in f:
+            obj.update(line.encode())
+
+        s = obj.hexdigest()
+
+    return s
+
+if __name__== "__main__":
+    f1 = input('请输入原始文件').strip()
+    f2 = input('请输入对比文件').strip()
+
+    if checkMd5(f1) == checkMd5(f2):
+        print("两个文件数据一致")
+
+    else:
+        print("两个文件数据不一致")
+
+		
+7、加盐的密文登陆
+import  hashlib
+reg_name = '111'
+reg_password = '222'
+
+def md5_password(password):
+    obj = hashlib.md5(b"loginpassword")
+
+    obj.update(password.encode())
+
+    s = obj.hexdigest()
+
+    return s
+
+def login(account,secrect):
+    if reg_name == account and reg_password == md5_password(secrect):
+        print("登入成功")
+    else:
+        print('账号或密码错误')
+
+def reg(account,secrect):
+    global reg_name,reg_password
+    reg_name = account
+    reg_password = md5_password(secrect)
+    print('注册成功~')
+
+if __name__== "__main__":
+
+    name = input('请输入注册名字:').strip()
+    password = input('请输入注册密码:').strip()
+    reg(name,password)
+
+    name = input('请输入登入名字:').strip()
+    password = input('请输入登入密码:').strip()
+    login(name,password)
+	
+	
+8、完成一个既可以向文件输出又可以向屏幕输出的日志设置
+import logging
+
+#设置输出格式
+def  log_out():
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+    #创建输入到文件的handler
+    fileHandler = logging.FileHandler('test.txt')
+    fileHandler.setFormatter(formatter)
+
+    #创建输入到屏幕的hhandler
+    streamHandler = logging.StreamHandler(stream=None)
+    streamHandler.setFormatter(formatter)
+
+    #实例化
+    logger =  logging.getLogger('test')
+    logger.setLevel(logging.INFO)
+
+    logger.addHandler(fileHandler)
+    logger.addHandler(streamHandler)
+    return logger
+
+if __name__ == '__main__':
+
+    logger = log_out()
+    logger.info('info message')
+    logger.debug('debug message')
+    logger.warning('warning message')
+    logger.error('error message')
+    logger.critical('critical message')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
