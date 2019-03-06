@@ -9,14 +9,14 @@ class client:
         self.sk.connect((conf.ip,conf.port))
 
     def send(self,msg):
-        leng = struct.pack('i',len(msg))
-        self.sk.send(leng)
+        # leng = struct.pack('i',len(msg))
+        # self.sk.send(leng)
         self.sk.send(msg.encode('utf-8'))
 
 
     def receive(self):
-        leng = struct.unpack('i',self.sk.recv(4).decode('utf-8'))
-        msg = self.sk.recv(leng)
+        # leng = struct.unpack('i',self.sk.recv(4).decode('utf-8'))
+        msg = self.sk.recv(1024)
 
         return msg
 
@@ -73,8 +73,8 @@ if __name__ == '__main__':
     cl = client()
     print(cl)
     cl.send('hello')
-    # msg = cl.receive()
-    # print(msg)
+    msg = cl.receive()
+    print(msg)
     # sk = socket.socket()
     # sk.connect((conf.ip, conf.port))
     # sk.send(b'hello')
