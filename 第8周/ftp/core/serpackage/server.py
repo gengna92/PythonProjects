@@ -5,10 +5,13 @@ from core.serpackage import secrect_md5
 from conf import conf
 class MyServer(socketserver.BaseRequestHandler):
     def handle(self):
+        return self.request
 
-        co = self.request.recv(1024)
-        self.request.send(b'recv')
-        print(co)
+
+
+
+
+
 
     
 
