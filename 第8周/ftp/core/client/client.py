@@ -9,35 +9,37 @@ class client:
         self.sk.connect((conf.ip,conf.port))
 
     def send(self,msg):
-        # leng = struct.pack('i',len(msg))
-        # self.sk.send(leng)
+        s = struct.pack('i',len(msg))
+        print(s)
+        self.sk.send(s)
         self.sk.send(msg.encode('utf-8'))
 
 
     def receive(self):
-        # leng = struct.unpack('i',self.sk.recv(4).decode('utf-8'))
+        leng = struct.unpack('i',self.sk.recv(4))[0]
         msg = self.sk.recv(1024)
 
         return msg
 
 
     # @staticmethod
-    def reg(self,account,password):
-        account = input('注册账号').strip()
-        password = input('注册账号密码').strip()
+    def reg(self):
+        account = input('请输入注册账号:').strip()
+        password = input('请输入注册账号密码:').strip()
         return account,password
 
     def login(self):
-        account = input('登录账号').strip()
-        password = input('登录账号密码').strip()
+        account = input('请输入登录账号:').strip()
+        password = input('请输入登录账号密码:').strip()
         return account, password
 
 
     def close(self):
         self.sk.close()
 
-    @classmethod
-    def show(cls):
+    @staticmethod
+    def show():
+        cls = client()
         flag = 0
         while 1:
             print(['1:注册\n','2:登录\n','3:文件下载\n','4：文件上传\n','5:退出\n'])
@@ -55,31 +57,35 @@ class client:
 
             elif num == 1:
                 account ,password = cls.reg()
-                cls.send(1)
+                print(account,password)
+                cls.send('reg')
                 cls.send(account)
                 cls.send(password)
-                cls.receive()
+                # msg = cls.receive()
+                # print(msg)
 
             elif num == 2:
                 account ,password = cls.login()
-                cls.send(2)
+                cls.send(str(2))
                 cls.send(account)
-                cls.send(password)
-                cls.receive()
+                # cls.send(password)
+                # cls.receive()
 
 
 
 if __name__ == '__main__':
-    cl = client()
-    print(cl)
-    cl.send('hello')
-    msg = cl.receive()
-    print(msg)
+    # # cl = client()
+    # cl.show()
+    # print(cl)
+    # cl.send('hello')
+    # msg = cl.receive()
+    # print(msg)
     # sk = socket.socket()
     # sk.connect((conf.ip, conf.port))
     # sk.send(b'hello')
     # msg = sk.recv(1024)
     # print(msg)
+    client.show()
 
 
 
