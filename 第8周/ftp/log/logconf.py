@@ -5,7 +5,8 @@ def conflog(filename,sysname):
     file_handler.setFormatter(logging.Formatter
                               (fmt="%(asctime)s - %(name)s - %(levelname)s -%(module)s: %(message)s"))
 
-    loggers = logging.Logger(sysname,level=logging.ERROR)
+    loggers = logging.Logger(sysname,level=logging.INFO)
+
     loggers.addHandler(file_handler)
     return loggers
 
