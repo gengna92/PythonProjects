@@ -97,7 +97,7 @@ class MyServer(socketserver.BaseRequestHandler):
 
 
             #下载文件
-            if types == 'upload':
+            if types == 'download':
                 #获取文件名以及文件size
                 file_name  = os.path.basename(conf.filepath)
                 file_size  = os.path.getsize(conf.filepath)
@@ -139,7 +139,49 @@ class MyServer(socketserver.BaseRequestHandler):
                     print('md5值校验成功')
                     loggers.info("文件md5值校验成功.....")
 
-    #注册
+        #上传
+
+            if types == 'upload':
+                #获取文件名以及文件size
+                self.request.send(b'connect')
+                # 接受服务端传过来filename以及size
+                n = self.request.recv(4)
+                n = struct.unpack('i', n)[0]
+
+                msg = self.request.recv(n)
+                file_json = json.loads(msg.decode('utf-8'))
+
+                print(file_json)
+                file_name = file_json['file_name']
+                file_size = 0
+                file_total = file_json['file_size']
+
+                loggers.info('准备开始接受文件.......文件名字是：%s，文件大小是：%s' % (file_name, file_size))
+
+                # add md5 check
+                m = hashlib.md5(conf.salt)
+
+                # 接受文件并写入
+                loggers.info('开始接受文件.......')
+
+                with open(file_name, 'ab') as f:
+                    while file_size < file_total:
+                        content = self.request.recv(1024)
+                        m.update(content)
+                        f.write(content)
+                        file_size += len(content)
+                        self.processBar(file_size, file_total)
+
+                loggers.info('文件上传完成.......')
+
+                # 将MD5值传给服务端进行校验
+                md5_s = m.hexdigest()
+                loggers.info('文件的MD5值是%s' % md5_s)
+                md5_len = struct.pack('i',len(md5_s))
+                self.request.send(md5_len)
+                self.request.send(md5_s)
+
+#注册
     def reg(self,account,password):
         loggers = logconf.conflog('../../log/server.txt', 'server')
 

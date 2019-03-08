@@ -6,6 +6,7 @@ import hashlib
 import sys
 import time
 from log import logconf
+import os
 
 
 class client:
@@ -31,6 +32,9 @@ class client:
     def recevied(self,n):
         return self.sk.recv(n)
 
+#发送n个字节的数据
+    def sends(self, msg):
+        return self.sk.send(msg)
 #进度条
     def processBar(self, num, total):
         rate = num / total
@@ -69,7 +73,7 @@ class client:
         cls = client()
         flag = 0
         while 1:
-            print(['1:注册','2:登录','3:文件下载','5:退出'])
+            print(['1:注册','2:登录','3:文件下载','4:文件上传','5:退出'])
 
             try:
                 num = int(input('请输入您的选择:').strip())
@@ -134,7 +138,7 @@ class client:
                     continue
 
                 #发送请求的操作
-                cls.send('upload')
+                cls.send('download')
                 #接受服务端传过来filename以及size
                 n = cls.recevied(4)
                 n = struct.unpack('i',n)[0]
@@ -148,6 +152,8 @@ class client:
                 file_total = file_json['file_size']
 
                 loggerc.info('准备开始下载文件.......文件名字是：%s，文件大小是：%s'%(file_name,file_size))
+
+
 
 
 #add md5 check
@@ -172,6 +178,57 @@ class client:
                 md5_s = m.hexdigest()
                 loggerc.info('文件的MD5值是%s'%md5_s)
                 cls.send(md5_s)
+
+
+            elif num == 4:
+                # 判断用户是否登入
+                if flag == 0:
+                    print('请先登入')
+                    continue
+
+                # 发送请求的操作
+                cls.send('upload')
+                # 接受服务端传过来filename以及size
+                con = cls.recevied(7).decode('utf-8')
+                if con == 'connect':
+                    file_name = os.path.basename(conf.filepath)
+                    file_size = os.path.getsize(conf.filepath)
+                    file_total = os.path.getsize(conf.filepath)
+
+                    info_dic = {'file_name': file_name, 'file_size': file_size}
+                    info_json = json.dumps(info_dic).encode('utf-8')  # str.encode('utf-8') bytes
+                    send_len = struct.pack('i', len(info_json))
+
+                    # 将文件名以及文件按大小发送到服务端
+                    cls.sends(send_len)
+                    cls.sends(info_json)
+
+                    m = hashlib.md5(conf.salt)
+
+                    loggerc.info("开始上传文件.....")
+
+                    with open(conf.filepath, mode='rb') as f:
+                        while file_size > 0:
+                            content = f.read(1024)
+                            m.update(content)
+                            cls.sends(content)
+                            file_size -= len(content)
+                            # 调用进度条
+                            cls.processBar((file_total - file_size), file_total)
+
+                    loggerc.info("文件上传完成.....")
+                    # 获取md5值
+                    s = m.hexdigest()
+                    # 接受服务端的MD5值，并校验是否一
+                    n = cls.recevied(4)
+                    n = struct.unpack('i',n)[0]
+                    s_md5 = cls.recevied(n).decode('utf-8')
+
+                    loggerc.info("原始文件的md5值是：%s，目标文件的md5值是：%s" % (s, s_md5))
+
+                    if s_md5 == s:
+                        print('md5值校验成功')
+                        loggerc.info("上传文件md5值校验成功.....")
 
 
 if __name__ == '__main__':
