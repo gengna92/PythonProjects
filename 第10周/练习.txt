@@ -1,0 +1,71 @@
+建表语句：
+create table class (
+cid int auto_increment PRIMARY KEY,
+caption char(20) not NULL
+);
+
+create table teacher (
+tid int auto_increment PRIMARY KEY,
+tname char(20) not NULL
+);
+
+create table course (
+cid int auto_increment PRIMARY KEY,
+cname char(20) not NULL,
+teacher_id int,
+FOREIGN KEY(teacher_id)  REFERENCES teacher(tid)
+);
+
+create table student (
+sid int auto_increment PRIMARY KEY,
+sname char(20) not NULL,
+gender enum('male','female'),
+class_id int ,
+FOREIGN KEY(class_id)  REFERENCES class(cid)
+);
+
+create table score (
+sid int auto_increment PRIMARY KEY,
+student_id int,
+course_id int ,
+number int,
+FOREIGN KEY(student_id)  REFERENCES student(sid),
+FOREIGN KEY(course_id)  REFERENCES course(cid)
+);
+
+查询所有同学的学号、姓名、选课数、总成绩；
+select t2.student_id ,t1.sname ,count(t2.course_id),sum(t2.number)  from student t1  INNER JOIN score t2 on 
+t1.sid = t2.student_id GROUP BY t1.sid ;
+
+查询姓“李”的老师的个数；
+select count(*) from teacher where tname like '李%'
+
+查询平均成绩大于60分的同学的学号和平均成绩；
+select student_id,avg(number) from score GROUP BY student_id HAVING avg(number) > 60
+ 
+查询有课程成绩小于60分的同学的学号、姓名
+select student_id,sname,avg(number) from score INNER JOIN student on score.student_id = student.sid
+ GROUP BY student_id HAVING avg(number) < 60
+
+删除学习“叶平”老师课的score表记录；
+delete from score where course_id in (select cid from course where cname = '叶平')
+
+查询各科成绩最高和最低的分：以如下形式显示：课程ID，最高分，最低分；
+SELECT course_id ,max(number),min(number) from score  GROUP BY course_id ;
+
+
+查询每门课程被选修的学生数；
+SELECT course_id,count(*) FROM `score` GROUP BY course_id;
+
+查询出只选修了一门课程的全部学生的学号和姓名；
+SELECT student_id,sname  FROM `score` INNER JOIN  student on score.student_id=student.sid
+GROUP BY course_id  HAVING count(*) = 1;
+
+查询选修“杨艳”老师所授课程的学生中，成绩最高的学生姓名及其成绩；
+select sname,max(number)  from score INNER JOIN student on score.student_id = student.sid where 
+course_id in (select cid from course  where cname = '杨艳')
+
+查询两门以上不及格课程的同学的学号及其平均成绩
+select student_id ,avg(number)  from score where student_id in (
+select student_id  from score group by student_id   
+having sum(case  when number <60  then 1 else 0 END )>2)
