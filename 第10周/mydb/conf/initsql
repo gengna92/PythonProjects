@@ -1,0 +1,21 @@
+-- 建表初始化sql
+create table managers(
+id int auto_increment PRIMARY KEY,
+uname char(255) unique,
+uword char(255),
+email char(255)
+);
+
+
+create table bussiness(
+id int auto_increment PRIMARY key,
+bname char(255) unique
+);
+
+create table hoster(
+id int auto_increment PRIMARY key,
+hname char(255) unique,
+hword char(255),
+b_id int ,
+FOREIGN key (b_id) REFERENCES bussiness(id)
+)

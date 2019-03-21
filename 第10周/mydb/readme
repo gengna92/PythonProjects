@@ -1,0 +1,6 @@
+1.运行前需要初始化建表sql
+    建表sql在conf----initsql
+
+2.程序运行入口
+    bin -----main
+
