@@ -4,3 +4,6 @@
 2.程序运行入口
     bin -----main
 
+3.若想在远端执行，需要把mydb package放到/usr/local/ 目录下
+然后再本地执行bin目录中的remote.py文件即可
+
