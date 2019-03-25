@@ -1,0 +1,35 @@
+1.分别列出常见的块级标签和内联标签
+常见的块级标签：
+div p h  ul ol dl  hr table
+内联标签：
+a span br stong em input img i
+2. form表单提交数据的注意事项
+form表单提交数据：
+action表示要提交的服务器
+method：表示提交的方法
+与后端进行交互，每个输入字段都需要添加一个name属性
+get适合提交数据比较少，post对提交的数据没有大小限制
+
+3. 默写本周见过的所有标签及作用
+
+form标签：
+	input标签  输入框 type可以是 text 、radio、checkbox、button
+	select标签 
+			option
+
+img 上传图片
+a  超链接
+br 换行
+p 段落标签
+h1-h6 标题标签
+ul 无序列表
+ol 有序列表
+dl 自定义列表
+table 表格标签
+div 块标签
+span 档中的行内的小块或区域
+link 链接
+style 样式标签
+em
+strong 加粗
+meta 源信息

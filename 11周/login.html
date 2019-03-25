@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>baidu</title>
+    <style>
+        .input_cls{
+            margin: 0;
+            border:0;
+            border-width: 1px;
+            border-color: darkgrey;
+            border-style: solid;
+            height: 25px;
+            width: 330px;
+        }
+        a{
+            text-decoration:none;
+            cursor:pointer;
+        }
+
+        .cls{
+           font-size: 14px;
+            font-weight: bold;
+            text-align: left;
+
+        }
+
+
+        .aaa{
+            color: #2b669a;
+        }
+
+        .button-cls{
+            height: 35px;
+            width: 330px;
+            margin-left: 3em;
+            background-color: cornflowerblue;
+        }
+
+        .ver_cls1{
+            background: none;
+            margin: 0;
+            border:0;
+            border-width: 1px;
+            border-color: darkgrey;
+            border-style: solid;
+            height: 29px;
+            width: 164px;
+            outline:none;
+            padding: 0;
+            box-sizing: border-box;
+            /*border-shadow: none;*/
+            /*border: 1px solid darkgrey;*/
+            /*margin-right: 2px;*/
+
+        }
+
+        .ver_cls2{
+            background: none;
+            margin: 0;
+            border:0;
+            border-width: 1px;
+            border-color: darkgrey;
+            border-style: solid;
+            height: 29px;
+            width: 120px;
+            outline:none;
+            padding: 0;
+            border-shadow: none;
+            border: 1px solid darkgrey;
+
+        }
+    </style>
+</head>
+<body>
+    <form action="">
+    <p class="cls">
+       用户名  <input type="text" name="用户名"  placeholder="请设置用户名" class="input_cls">
+    </p>
+
+    <p  class="cls">
+       手机号  <input type="text" name="手机号"  placeholder="可用于登陆和找回密码" class="input_cls">
+         </p>
+    </p  class="cls">
+
+    <p  class="cls" style="text-indent: 1em">
+       密码  <input type="text" name="密码"  placeholder="请设置登陆密码" class="input_cls">
+    </p>
+
+    <p class="cls">
+       验证码  <input type="text" name="验证码"  placeholder="请输入验证码" class="ver_cls1">
+        <!--<a href="http://www.baidu.com">获取短信验证码</a>-->
+        <a>
+            <!--<button style="cursor: pointer">获取短信验证码</button>-->
+            <input type="button" value="获取短信验证码" class="ver_cls1" style="cursor: pointer">
+        </a>
+
+    </p>
+
+    <p style="font-size: 12px">
+        <input type="checkbox" name="" style="margin-left: 3em"> 阅读并接受
+        <a href="https://passport.baidu.com/static/passpc-account/html/protocal.html"  class="aaa">《百度用户协议》</a> 及
+        <a href="https://www.baidu.com/duty/yinsiquan.html"  class="aaa">《百度隐私权保护声明》</a>
+    </p>
+
+    <a href="">
+        <button style="cursor: pointer" class="button-cls">注册</button>
+    </a>
+
+        </form>
+
+
+
+</body>
+</html>
