@@ -1,0 +1,47 @@
+1.列出所有的CSS选择器
+css选择器：
+基础选择器：
+	* 通配符选择器
+	#id id选择器
+	.class 类选择器
+	div img 标签选择器
+高级选择器
+	ul>li 子代选择器
+	ul a  后代选择器
+	li+a  相邻选择器
+	li ~a  兄弟选择器
+伪类选择器：
+	a:hover
+属性选择器：
+	input[type=text]
+伪元素选择器：
+	item：：after
+2. padding和margin的区别？
+	margin是指从自身边框到另一个容器边框之间的距离，就是容器外距离。
+	padding是指自身边框到自身内部另一个容器边框之间的距离，就是容器内距离
+3. 定义函数的几种方式
+普通函数：
+	funcation func(){
+	}
+函数对象：	
+	var a = funcation (){
+	}
+自执行函数	
+	(funcation(){})()
+构造函数：
+	函数名第一个大写  使用this关键字 使用new命令来调用函数
+4. JSON用法
+	JSON.parse()	用于将一个 JSON 字符串转换为 JavaScript 对象。
+	JSON.stringify()	用于将 JavaScript 值转换为 JSON 字符串。
+5. DOM查找标签和创建标签
+查找标签：
+	document.getElementById()
+	document.getElementByClassName()
+	document.getElementByTagName()
+创建标签：
+	document.createElement(name)
+	
+6. DOM如何绑定事件
+	在dom中写事件
+	在JavaScript中绑定
+	使用事件监听函数对dom进行绑定

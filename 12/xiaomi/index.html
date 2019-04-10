@@ -60,6 +60,208 @@
 
 
 
+    .content{
+        height: 100px;
+        /*background-color: #b0b0b0;*/
+    }
+
+    .content-container{
+        width: 1266px;
+        /*background-color: cornflowerblue;*/
+        height: 100px;
+        margin: 0 auto;
+    }
+
+    .logo{
+        height: 55px;
+        width: 55px;
+        float: left;
+        margin-top: 22px;
+    }
+
+    .content ul{
+        float: left;
+        margin:42px 50px 42px 100px
+
+    }
+
+    .content ul li{
+        float: left;
+    }
+
+    .content ul li a{
+       /*font-size: 16px;*/
+        /*color:#333333;*/
+        /*padding: 8px;*/
+          padding: 20px 10px 30px;
+          color: #000;
+    }
+
+        .content ul li a:hover{
+            color: #ff6700;
+        }
+
+    .content .search{
+        float: right;
+        position: relative;
+
+
+    }
+
+    .search .search-child{
+        position: absolute;
+        top:40px;
+        right: 55px;
+    }
+
+
+    .search input[type='text']{
+        height: 48px;
+        width:204px;
+        border: 1px solid #e0e0e0;
+        margin-top: 25px;
+        font-size: 16px;
+        padding: 0 8px;
+    }
+
+       .search input[type='submit']{
+          width:51px;
+           height: 50px;
+            border: 1px solid #e0e0e0;
+            background-color: #fff;
+           margin-left: -1px;
+
+    }
+
+    .search .search-child a{
+          background-color: #eee;
+          padding: 0 5px;
+          color: #616161;
+          font-size: 14px;
+    }
+
+        .search .search-child a:hover{
+          background-color: #ff6700;
+            color: #fff;
+    }
+
+
+    /*.swiper{*/
+        /*width: 1266px;*/
+        /*height: 460px;*/
+        /*margin-left: 40px;*/
+    /*}*/
+
+       .swiper .container{
+           height: 460px;
+           margin-left: 42px;
+           /*margin-top: 10px;*/
+       }
+
+       .swiper a{
+            display: inline-block;
+           margin-top:-5px;
+            width: 1266px;
+            height: 460px;
+        }
+
+       .swiper a img{
+        width: 1266px;
+           height: 460px;
+
+    }
+       .clearfix:after{
+            content:'';
+            display: block;
+            clear: both;}
+
+
+    .list-category{
+        position: relative;
+    }
+    .list-category-chi{
+            width: 234px;
+            height: 460px;
+            background-color: rgba(0,0,0,0.6);
+            position: absolute;
+            top: 16px;
+            left: -256px
+    }
+   .list-category-chi li{
+       padding: 0px 0px 0px 30px;
+       width:234px;
+       height: 42px;
+       font-size: 14px;
+       color: #ffffff;
+   }
+    .footer{
+        margin-top: 20px;
+    }
+   .footer .container{
+       height: 170px;
+        width:1266px;
+         margin:auto;
+
+
+   }
+    .footer .item img{
+        height: 170px;
+        width: 316px;
+
+    }
+
+    .list-a{
+        float: left;
+        height: 170px;
+        width: 230px;
+        margin-right: 29px;
+    }
+
+
+
+
+    #f1 {
+        float: left;
+        margin-right: 29px;
+    }
+
+       #f2 {
+        float: left;
+           margin-right: 29px;
+
+
+    }
+
+       #f3 {
+        float: right;
+    }
+    .list-a  li{
+        margin: 0;
+        border: 0;
+        display: block;
+        width: 230px;
+        height: 85px;
+        background-color: #b0b0b0;
+         /*float: left;*/
+    }
+     .list-a  li a{
+         display: block;
+        font-size: 12px;
+          width: 75px;
+        height: 85px;
+         color: rgba(255,255,255,0.7);
+         float: left;
+         border: 1px solid rgba(255,255,255,0.7) ;
+         margin-right: -1px;
+         margin-bottom: -1px;
+         text-align: center;
+         line-height: 80px;
+         /*vertical-align: middle;*/
+
+
+    }
+
+
 
 </style>
 <body>
@@ -133,10 +335,32 @@
     <div class="content">
         <div class="content-container">
             <div class="logo">
-                <a href=""><img src="xiaomi.png" alt=""></a>
+                 <a href=""><img src="https://s01.mifile.cn/i/logo-footer.png?v2" alt=""></a>
 
             </div>
-            <div class="ul">
+            <div>
+                <ul class="clearfix">
+                    <li class="list-category">
+                        <a href="#"  style="visibility:hidden">全部商品分类</a>
+
+
+                <ul class="list-category-chi">
+                    <li style="padding: 30px 0px 0px 30px">手机 电话卡 </li>
+                    <li>电视 盒子</li>
+                    <li>笔记本 平板</li>
+                    <li>家电 插线板</li>
+                    <li>出行 穿戴</li>
+                    <li>智能 路由器</li>
+                    <li>电源 配件</li>
+                    <li>健康 儿童</li>
+                    <li>耳机 音箱</li>
+                    <li>生活 箱包</li>
+                </ul>
+
+
+                    </li>
+
+
                 <li>
                     <a href="#">小米手机</a>
                 </li>
@@ -176,13 +400,15 @@
                   <li>
                     <a href="#">社区</a>
                 </li>
+                    </ul>
 
 
             </div >
-            <div calss="put">
+
+            <div class="search">
                 <form action="">
-                    <input type="text">
-                    <div>
+                    <input type="text"><input type="submit">
+                    <div class="search-child">
                         <a href="#">小米9</a>
                         <a href="#">小米9 SE</a>
 
@@ -192,6 +418,54 @@
             </div>
 
         </div>
+    </div>
+
+    <div  class="swiper">
+        <div class="container">
+            <a href="">
+                <img src="https://i1.mifile.cn/a4/xmad_15517939170939_oiXCK.jpg" alt="">
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="footer clearfix" >
+        <div class="container">
+            <div class="list-a">
+                <ul>
+                    <li>
+                        <a href="">选购手机</a>
+                        <a href="">企业团购</a>
+                        <a href="">F码通道</a>
+                    </li>
+
+                      <li>
+                        <a href="">米粉卡</a>
+                        <a href="">以旧换新</a>
+                        <a href="">话费充值</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="item" id="f1">
+                <a href="">
+                    <img src="https://i1.mifile.cn/a4/xmad_1550713536261_EJOpq.jpg" alt="">
+                </a>
+            </div>
+              <div class="item" id="f2">
+                <a href="">
+                    <img src="https://i1.mifile.cn/a4/xmad_15510775494887_EWGcg.jpg" alt="">
+                </a>
+            </div>
+              <div class="item" id="f3">
+                <a href="">
+                    <img src="https://i1.mifile.cn/a4/xmad_15410599445473_Ivjsb.jpg" alt="">
+                </a>
+            </div>
+
+
+        </div>
+
     </div>
 
 </body>
