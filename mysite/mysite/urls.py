@@ -19,8 +19,9 @@ from userapp import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^login/', views.login),
     url(r'^user-list/', views.userList),
-    # url(r'^addUser/', admin.site.urls),
-    # url(r'^delUser/', admin.site.urls),
-    # url(r'^modifyUser/', admin.site.urls),
+    url(r'^addUser/', views.addUser),
+    url(r'^delUser/', views.delUser),
+    url(r'^modifyUser/', views.modifyUser),
 ]
