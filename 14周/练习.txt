@@ -1,0 +1,46 @@
+1. 什么是wsgi？
+wsgi是一种规范，定义了使用ptyhon编写的web应用程序与wen服务器程序之间的接口格式，实现web应用程序与
+web服务器程序间的解耦
+
+2. mvc和mtv的区别以及django属于哪一种？
+django属于mtv模式
+mvc：
+Model，主要封装对数据库层的访问，对数据库中的数据进行增、删、改、查操作。
+View，用于封装结果，生成页面展示的html内容。
+Controller，用于接收请求，处理业务逻辑，与Model和View交互，返回结果。
+
+mtv：
+Model(模型)：负责业务对象与数据库的对象(ORM)
+Template(模版)：负责如何把页面展示给用户
+View(视图)：负责业务逻辑，并在适当的时候调用Model和Template
+
+3. django常见命令
+django-admin startproject 项目名称     创建一个项目
+python manage.py runserver 启动应用程序
+python manage.py startAPP APP名称  创建app
+python manage.py makemigrations   生成迁移文件
+python manage.py migrate          更新到数据库
+
+
+4. 如何通过GET和POST向后台传参
+get :通过url参数
+post：通过form表单
+
+
+5. django中如何获取POST和GET传入的参数
+通过request对象
+post:request.POST 获取对象列表
+get:request.GET 获取对象列表
+
+6. 模板渲染时如何获取列表或字典的元素（根据索引）？
+根据索引以及其属性
+
+7. 什么是ORM？
+ORM：对象关系映射，是一种为了解决面向对象与关系数据库互不匹配的现象的技术
+它通常将一个类和一张表一一对应，类的每个实例对应表中的一条记录，类的每个属性对应表中的每个字段
+
+
+8. 创建django程序时需要注意的配置有哪些？
+静态文件的配置
+模板文件的配置
+新的app注册
