@@ -1,0 +1,39 @@
+{% extends 'showbase.html' %}
+{% block lob_active %}
+   active
+{% endblock %}
+
+{% block username %}
+ {{ username }}
+{% endblock %}
+{% block content %}
+              <h3 class="sub-header">业务线管理</h3>
+            <a class="btn btn-primary"  href="{% url 'loblineadd' %}">添加</a>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>序号</th>
+                  <th>id</th>
+                  <th>业务线</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                {%for lobline in linelist %}
+                    <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ lobline.id }}</td>
+                    <td>{{ lobline.lname }}</td>
+                    <td>
+                        <a class="btn btn-danger btn-sm" href="{%  url 'delete' 'lobline' lobline.id %}">删除</a>
+                        <a class="btn btn-sm btn-primary" href="{% url 'loblineedit' lobline.id %}">编辑</a>
+                    </td>
+                    </tr>
+                {% endfor %}
+
+              </tbody>
+            </table>
+          </div>
+
+{% endblock %}

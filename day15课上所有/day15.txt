@@ -1,0 +1,347 @@
+day15
+1. 内容回顾
+	1.django命令
+		1. 下载
+			pip install django==1.11.20 -i 源
+		2. 创建项目
+			django-admin startproject 项目名称
+		3. 启动项目
+			切换到项目目录下
+			python manage.py runserver   # 127.0.0.1:8000
+			python manage.py runserver  80 # 127.0.0.1:80
+			python manage.py runserver  0.0.0.0:80 # 0.0.0.0:80
+		4. 创建APP
+			python manage.py startapp  app名称
+		5. 数据库迁移的命令
+			python3 manage.py makemigrations  记录所有APP下的models.py变更记录 
+			python manage.py migrate     将models.py变更记录同步到数据库中
+			
+	2. django的配置
+		1. 注册的APP
+			INSTALLED_APPS
+			'app01.apps.App01Config'
+		2. 中间件 
+			MIDDLEWARE
+			'django.middleware.csrf.CsrfViewMiddleware' 注释掉之后提交POST请求
+		3. 模板 
+			TEMPLATES 
+			'DIRS': [os.path.join(BASE_DIR, 'templates')],
+			
+		4. 数据库
+			DATABASES
+			mysql数据库
+				DATABASES = {
+					'default': {
+						'ENGINE': 'django.db.backends.mysql',
+						'NAME': 's25_mysite',
+						'HOST': '127.0.0.1',
+						'PORT': 3306,
+						'USER': 'root',
+						'PASSWORD': ''
+					}
+				}
+				
+				import pymysql
+				pymysql.install_as_MySQLdb()
+		5. 静态文件相关
+			STATIC_URL = '/static/'  # 静态文件的别名
+			STATICFILES_DIRS = [     # 静态文件存放的路径
+				os.path.join(BASE_DIR,'static')，
+			]
+
+			
+2. 今日内容
+
+	路由系统进阶：https://www.cnblogs.com/maple-shaw/articles/9282718.html
+		- 动态路由
+			[0-9]{4}   [0-9]{1,4}  \d  \w  ^ $
+		- 分组、命名分组
+			分组  	   正则表达式中  （）  捕获括号中的参数，并且按照位置传参的方式传递给函数
+			命名分组   正则表达式中  （?P<name>\d+）  捕获括号中的参数，并且按照关键字传参的方式传递给函数
+		- include
+			root_urlconf  
+				urlpatterns = [
+					url(r'^admin/', admin.site.urls),
+						url(r'^app01/', include('app01.urls')),
+					url(r'^app02/', include('app02.urls')),
+				   
+				]
+			app01 urlconf
+				urlpatterns = [
+					url(r'^publisher/$', views.publisher),
+					url(r'^publisher/add/$', views.add_publisher),
+					url(r'^edit_publisher/(\d+)/$', views.edit_publisher),
+
+				]
+			
+		- URL命名和反向解析
+			给上一个URL的别名，根据这个别名获取到完整的URL地址的字符串
+			
+			静态的URL：
+				命名:
+					url(r'^publisher/$', views.publisher, name='publisher')
+					
+				反向解析：
+					模板：	
+						{% url 'publisher' %}  —— 》  /app01/publisher/
+						
+					py文件：
+						from django.urls import reverse
+						reverse('publisher')   —— 》   /app01/publisher/
+  			
+			分组
+				命名：
+					url(r'^book/([0-9]{4})/(\d{2})/$', views.book, name='book'),
+					url(r'^edit_publisher/(\d+)/$', views.edit_publisher,name='edit_publisher'),
+						
+				反向解析：
+					模板：	
+						{% url 'book' '2019' '05' %}  —— 》  /app02/book/2019/05/	
+					py文件：
+					
+						reverse('edit_publisher',args=('2',))   —— 》   /app01/edit_publisher/2/
+					
+				
+			命名分组
+				命名：
+					url(r'^book/(?P<year>[0-9]{4})/(?P<month>\d{2})/$', views.book, name='book'),
+				
+						
+				反向解析：
+					模板：	
+						{% url 'book' '2019' '05' %}  —— 》  /app02/book/2019/05/	
+						{% url 'book' year='2019' month='05' %}  —— 》  /app02/book/2019/05/	
+					py文件：
+					
+						reverse('book', args=('2019','06'))    ——》/book/2019/06/ 
+						reverse('book', kwargs={'year':'2017','month':'05'})  ——》  /book/2017/05/
+			
+		- namespace
+				
+			    url(r'^', include('app02.urls',namespace='app02')),
+				url(r'^app01/', include('app01.urls',namespace='app01')),
+				
+				{% url 'publisher' %}   ——》  {% url 'app01:publisher'  %}
+				
+	MVC
+	MTV
+
+	
+		
+	视图函数进阶: https://www.cnblogs.com/maple-shaw/articles/9285269.html
+		- FBV  funcation based view	
+		- CBV  class based view
+			定义CBV
+				from django.views import View
+
+				class AddPublisher(View):
+					
+					def get(self, request):
+						pass
+					
+					def post(self, request):
+						pass
+			使用：
+				url(r'^publisher/add/$', views.AddPublisher.as_view()),
+			
+		- 装饰器的使用
+			FBV 直接加在被装饰函数上
+			CBV  三种方式
+				from django.utils.decorators import method_decorator
+
+			
+				- 加在某个方法上
+					@method_decorator(timer)
+					def get(self, request):
+					
+				- 加在类上
+					@method_decorator(timer, name='get')
+					@method_decorator(timer, name='post')
+					class AddPublisher(View):
+					
+				- 加在disptach上
+					@method_decorator(timer)
+					def dispatch(self, request, *args, **kwargs):
+					
+					@method_decorator(timer, name='dispatch')
+					class AddPublisher(View):
+			
+			不使用method_decorator	
+			<function AddPublisher.get at 0x0000000003F88C80>
+			(<app01.views.AddPublisher object at 0x000000000406BB70>, <WSGIRequest: GET '/app01/publisher/add/'>)
+			
+			使用method_decorator，args的第一个参数就是request对象	
+			<function method_decorator.<locals>._dec.<locals>._wrapper.<locals>.bound_func at 0x0000000004070378>
+			(<WSGIRequest: GET '/app01/publisher/add/'>,)
+
+		- 请求和响应
+			request
+				属性
+				request.method  请求方式 POST GET DELETE
+				request.GET     url上携带的参数 
+			    request.POST    form表单提交POST请求的数据 
+				request.path_info  url路径  不包含ip和端口、参数
+				request.body    请求体 原始数据
+				request.FILES   上传的文件
+				request.META    请求头
+
+				request.COOKIES  COOKIE数据
+				request.session  session数据
+				
+				方法
+				request.get_host()  主机ip和端口
+				request.get_full_path()  url路径  不包含ip和端口  包含参数
+				request.is_ajax()   是否是ajax请求
+				
+			response
+				HttpResponse('字符串')   ——》  页面显示字符串
+				render(request,'模板文件名',{})   ——》 返回一个完整的页面
+				redirect('重定向的地址')   ——》 重定向    Location:地址
+				JsonResponse(data)     json序列化  Content-Type: application/json   JsonResponse(data,safe=False)  非字典类型
+		
+	模板引擎进阶: https://www.cnblogs.com/maple-shaw/articles/9333821.html
+		- 变量
+			点（.） 获取属性或方法
+				.索引
+				.key
+				.属性
+				.方法  不加（） 没有参数
+				注：当模板系统遇到一个（.）时，会按照如下的顺序去查询：
+					1. 在字典中查询
+					2. 属性或者方法
+					3. 数字索引
+		- 过滤器、
+			用来改变变量的显示结果
+			语法
+				 {{ value|filter_name }}
+				 {{ value|filter_name:参数 }}
+				 
+			default 默认值  变量不存在或者为空时使用默认值
+			
+			{{ file_size|filesizeformat }}   显示文件大小
+			
+			{{ value|add:"2" }}   数字加法  字符串的拼接  列表的拼接
+			{{ l|length }}   变量的长度
+			{{l|slice:"::2"}}   切片 
+			{{l|slice:"2:-2:-1"}}
+			{{ long_str|truncatechars:15}}  截断
+			 *{{ now|date:'Y-m-d H:i:s' }}  日期时间格式化
+				settings的配置
+					USE_L10N = False
+					DATETIME_FORMAT = 'Y-m-d H:i:s'
+			
+			date : https://docs.djangoproject.com/en/1.11/ref/templates/builtins/#date
+			
+			safe 告诉django不需要对变量进行转义
+			
+		- 标签
+			for  
+				forloop   forloop.counter 当前循环的索引值  forloop.first 是否是第一次循环
+			
+			for .. empty  
+				
+				{% for p in p_list %}
+					<li> {{ p }}</li>
+				{% empty %}
+					<li>没有数据</li>
+				{% endfor %}
+
+			if 不支持 算数运算  连续判断（跟python中 10>5>1 结果不一样）
+			
+		- csrf_token 
+			在form标签中 使用  {% csrf_token %}   就可以提交POST请求	
+		- 母版和继承
+			母版  就是一个HTML页面，包含多个页面的公共部分，给子页面预留好位置进行重写
+			继承
+				1. {% extends 'base.html' %}  继承哪个母版
+				2. 重写block块
+			
+			注意事项：
+				1. {% extends 'base.html' %} 上面不要有内容
+				2. {% extends 'base.html' %}  'base.html' 加上引号 不然当做变量
+				3. 要展示的内容写在block中
+				4. 定义多个block块 一般包含css js 
+			
+		- 组件
+			一小段代码段  —— 》 nav.html 
+			使用： {% include ’nav.html‘ %}
+		
+		- 静态文件相关
+			{% load static %}
+			{% static 'plguins/bootstrap/css/bootstrap.min.css' %}
+			{% get_static_prefix %}   ——》 获取静态文件的别名
+			
+	外键操作
+		model：
+			class Book(models.Model):
+				title = models.CharField(max_length=32)
+				publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)
+		
+		查询：
+		all_book = models.Book.objects.all()
+		for book in all_book:
+			print(book.publisher,type(book.publisher))  # 所关联的出版社对象
+			print(book.publisher_id)   				 # 所关联的出版社对象id
+		
+		
+		新增：
+			models.Book.objects.create(title=book_name, publisher=models.Publisher.objects.get(pk=pub_id))
+			models.Book.objects.create(title=book_name, publisher_id=pub_id)
+			
+		修改：
+			book_obj.title = book_name
+			book_obj.publisher_id = pub_id
+			# book_obj.publisher = models.Publisher.objects.get(pk=pub_id)
+			book_obj.save()
+	
+		
+
+3. 作业：主机管理【02】：业务线管理
+	1. 基于django创建表：
+		用户表：ID、用户名、密码
+		业务线表：ID、名称
+		主机表：ID、主机名、密码、业务线ID
+	2. 使用模板和动态路由
+	3. 主机管理使用CBV实现
+	4. 套用BootStrap样式	
+
+
+	13261698937
+
+	预留信息
+	证件到期
+
+						1.会话超时，数据未清空
+						2.公告内容以及资讯内容----修改成公告 、资讯
+						3.android 公告样式
+						4.收款申报数据未清空
+						5.首页最后一张图片居中
+						6.logo失真
+						7.手机格式3-4-4
+						8.手机号格式校验
+						9.未开通账户  点击设置---账户未激活-----点击关闭----跳转问题
+						10.公告点击问题
+						11.清除输入
+						12.颜色：onactive 颜色
+						13.数字键盘
+	   					14.请码格 样式变化
+
+
+
+
+	9000 0060 0352
+	0 6 8  1 9 7
+	
+	
+13261698937
+13683100592
+17610277817
+15101053246
+
+
+
+
+
+
+
+

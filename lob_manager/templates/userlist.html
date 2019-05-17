@@ -1,0 +1,144 @@
+{#<!DOCTYPE html>#}
+{#<html lang="zh-CN">#}
+{#  <head>#}
+{#    <meta charset="utf-8">#}
+{#    <meta http-equiv="X-UA-Compatible" content="IE=edge">#}
+{#    <meta name="viewport" content="width=device-width, initial-scale=1">#}
+{#    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->#}
+{#    <meta name="description" content="">#}
+{#    <meta name="author" content="">#}
+{#    <link rel="icon" href="../../favicon.ico">#}
+{##}
+{#    <title>业务线管理</title>#}
+{#    <!-- Bootstrap core CSS -->#}
+{#    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">#}
+{##}
+{#    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->#}
+{##}
+{#    <!-- Custom styles for this template -->#}
+{#    <link href="/static/css/home.css" rel="stylesheet">#}
+{##}
+{#    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->#}
+{##}
+{#    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->#}
+{#    <!--[if lt IE 9]>#}
+{#      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>#}
+{#      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>#}
+{#    <![endif]-->#}
+{#  </head>#}
+{##}
+{#  <body>#}
+{##}
+{#    <nav class="navbar navbar-inverse navbar-fixed-top">#}
+{#      <div class="container-fluid">#}
+{#        <div class="navbar-header">#}
+{#          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">#}
+{#            <span class="sr-only">Toggle navigation</span>#}
+{#            <span class="icon-bar"></span>#}
+{#            <span class="icon-bar"></span>#}
+{#            <span class="icon-bar"></span>#}
+{#          </button>#}
+{#          <a class="navbar-brand" href="#">Project name</a>#}
+{#        </div>#}
+{#        <div id="navbar" class="navbar-collapse collapse">#}
+{#          <ul class="nav navbar-nav navbar-right">#}
+{#            <li><a href="#">Dashboard</a></li>#}
+{#            <li><a href="#">Settings</a></li>#}
+{#            <li><a href="#">Profile</a></li>#}
+{#            <li style="font-size:16px; padding:12px 12px ;color:#FFFFFF">当前用户：{{ username }}</li>#}
+{#          </ul>#}
+{#          <form class="navbar-form navbar-right">#}
+{#            <input type="text" class="form-control" placeholder="Search...">#}
+{#          </form>#}
+{#        </div>#}
+{#      </div>#}
+{#    </nav>#}
+{##}
+{#    <div class="container-fluid">#}
+{#      <div class="row">#}
+{#        <div class="col-sm-2 col-md-2 sidebar">#}
+{#          <ul class="nav nav-sidebar">#}
+{#            <li class="active"><a href="#">用户管理</a></li>#}
+{#            <li><a href="#">业务线管理</a></li>#}
+{#            <li><a href="#">主机管理</a></li>#}
+{#          </ul>#}
+{#        </div>#}
+{#        <div class="col-sm-10 col-sm-offset-3 col-md-10 col-md-offset-2 main">#}
+{#          <h2 class="sub-header">用户管理</h2>#}
+{#            <a class="btn btn-primary"  href="">添加</a>#}
+{#          <div class="table-responsive">#}
+{#            <table class="table table-striped">#}
+{#              <thead>#}
+{#                <tr>#}
+{#                  <th>序号</th>#}
+{#                  <th>id</th>#}
+{#                  <th>用户名</th>#}
+{#                  <th>操作</th>#}
+{#                </tr>#}
+{#              </thead>#}
+{#              <tbody>#}
+{#                {%for user in userlist %}#}
+{#                    <tr>#}
+{#                    <td>{{ forloop.counter }}</td>#}
+{#                    <td>{{ user.uid }}</td>#}
+{#                    <td>{{ user.uname }}</td>#}
+{#                    <td>#}
+{#                        <a class="btn btn-danger btn-sm" href="">删除</a>#}
+{#                        <a class="btn btn-sm btn-primary" href="">编辑</a>#}
+{#                    </td>#}
+{#                    </tr>#}
+{#                {% endfor %}#}
+{##}
+{#              </tbody>#}
+{#            </table>#}
+{#          </div>#}
+{#        </div>#}
+{#      </div>#}
+{#    </div>#}
+{##}
+{#    <!-- Bootstrap core JavaScript#}
+{#    ================================================== -->#}
+{#    <!-- Placed at the end of the document so the pages load faster -->#}
+{#    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>#}
+{#    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>#}
+{#  </body>#}
+{#</html>#}
+{% extends 'showbase.html' %}
+{% block user_active %}
+   active
+{% endblock %}
+
+{% block username %}
+ {{ username }}
+{% endblock %}
+{% block content %}
+              <h3 class="sub-header">用户管理</h3>
+            <a class="btn btn-primary"  href="{% url 'useradd' %}">添加</a>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>序号</th>
+                  <th>id</th>
+                  <th>用户名</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                {%for user in userlist %}
+                    <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.uname }}</td>
+                    <td>
+                        <a class="btn btn-danger btn-sm" href="{% url 'delete' 'user' user.id %}">删除</a>
+                        <a class="btn btn-sm btn-primary" href="{% url 'useredit' user.id   %}">编辑</a>
+                    </td>
+                    </tr>
+                {% endfor %}
+
+              </tbody>
+            </table>
+          </div>
+
+{% endblock %}
