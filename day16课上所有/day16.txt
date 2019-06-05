@@ -1,0 +1,296 @@
+day17
+1. 内容回顾
+	1. 路由
+		1. 静态路由  
+			/publisher_list/
+		2. 动态路由
+			^ $  [0-9]  [a-z]  [A-Z] /d /w  ? + *
+		3. 分组和命令分组
+			分组      （）   捕获的参数按照位置传参传递给视图函数
+			命名分组  （?P<name> ）   捕获的参数按照关键字传参传递给视图函数
+		4. 路由分发  include
+		5. url命令和反向解析
+			给url起一个别名   根据别名获取到url的完整的路径的字符串
+			
+			静态路由
+				url(r'^publisher_list/$', views.publisher, name='publisher'), 
+				模板：  
+					{% url ‘publisher’ %}    ——》  '/app01/publisher_list/'
+				py文件：
+					from django.urls import reverse
+					reverse('publisher')     ——》  '/app01/publisher_list/'
+					
+			分组
+				url(r'^edit_publisher/(\d+)/$', views.edit_publisher, name='edit_publisher'),
+				
+				模板：  
+					{% url edit_publisher '1' %}    ——》  '/app01/edit_publisher/1/'
+				py文件：
+					from django.urls import reverse
+					reverse('edit_publisher',args=('1',))     ——》    '/app01/edit_publisher/1/'
+					
+			命令分组
+				url(r'^edit_publisher/(?P<pk>\d+)/$', views.edit_publisher, name='edit_publisher'),
+				
+				模板：  
+					{% url edit_publisher '1' %}    ——》  '/app01/edit_publisher/1/'
+					{% url edit_publisher pk='1' %}    ——》  '/app01/edit_publisher/1/'
+				py文件：
+					from django.urls import reverse
+					reverse('edit_publisher',args=('1',))     ——》    '/app01/edit_publisher/1/'
+					reverse('edit_publisher',kwargs={'pk':'1'}    ——》    '/app01/edit_publisher/1/'
+				
+		6. namespace
+			 url(r'^app01/', include('app01.urls', namespace='app01')),
+			 
+			 url(r'^publisher_list/$', views.publisher, name='publisher'), 
+			 
+			 反向解析
+				模板：  
+					{% url ‘app01:publisher’ %}    ——》  '/app01/publisher_list/'
+				py文件：
+					from django.urls import reverse
+					reverse('publisher')     ——》  '/app01/publisher_list/'
+			 		
+	2. 视图 view   
+		FBV  CBV 
+		
+		from django.views import View
+		class AddPub(View):
+			
+			def get(self,request,*args,**kwargs):
+				pass
+				
+				
+			def post(self,request,*args,**kwargs):
+				pass
+		
+		使用：
+			url(r'^add_publisher/$', views.AddPub.as_view()), 
+		
+		请求对象
+			属性
+			request.method  ——》 请求方式  GET POST 
+			request.GET    ——》 url上携带的参数    /user_list/?id=1&name=xxx   {'id':'1','name':'xxx'}
+			request.POST   ——》 提交POST请求的数据  
+			request.FILES   ——》 上传的文件 
+			request.body   ——》 请求体  
+			request.path_info   ——》 路径  不包含IP和端口、url的参数
+			
+			方法
+			request.get_full_path()   ——》 路径  不包含IP和端口  包含url的参数
+			request.get_host()
+		
+		响应对象
+			HttpResponse('字符串')    ——》 字符串
+			render(request,'页面的名字',{})    ——》 完整的页面
+			redirect('重定向的地址')   ——》 重定向   Location：’重定向的地址‘ 
+			JsonResponse({})   ——》  json      JsonResponse([],safe=False) 
+		
+	
+	3. 模板
+		变量
+			{{ 变量 }}
+			
+			{{ 变量.索引 }}
+			{{ 变量.key }}
+			{{ 变量.属性 }}
+			{{ 变量.方法 }}
+			
+		过滤器
+			改变变量的显示结果
+			{{ 变量|filter }}
+			{{ 变量|filter:参数 }}
+			
+			default 
+			date:'Y-m-d H:i:s'
+			safe   
+		标签
+			if    不支持算数运算、连续判断
+			for  for empty   
+				forloop 
+				
+			csrf_token    提交POST请求
+			
+		母版和继承
+			母版：
+				就是一个普通的HTML，提取到多个页面的公共部分，定义多个block
+			继承：
+				子页面 第一行 {% extends '母版的文件名' %}
+				重写block块  
+		
+		组件
+			一小段HTML代码段   nav.html 
+			{% include 'nav.html' %}
+			
+		静态文件相关
+			{% load static %}
+			
+			{% static '静态文件的相对路径' %}   
+
+			{% get_static_prefix %}
+		
+	4. 外键的操作
+		class Book(models.Model):
+			title = models.CharField(max_length=32)
+			publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)   —— 》 字段publisher_id 
+		
+		
+		book_obj.title
+		book_obj.publisher   ——》 所关联的出版社对象
+		book_obj.publisher_id   ——》 所关联的出版社对象id 
+		
+		Book.objects.create(title='xxxas',publisher=对象)
+		Book.objects.create(title='xxxas',publisher_id=对象的id)
+		
+		
+	
+	
+
+2. 今日内容
+	1. ORM操作
+		https://www.cnblogs.com/maple-shaw/articles/9323320.html
+		https://www.cnblogs.com/maple-shaw/articles/9403501.html
+		1. 常用字段和参数
+			AutoField
+			CharField
+			IntegerField
+			DateTimeField  DateField 
+			BooleanField
+			DecimalField
+			
+			参数：
+			null    
+			blank 
+			default             
+			unique
+			verbose_name
+			choices  
+			
+		amdin的使用：
+			1. 创建超级用户
+				python manage.py createsuperuser
+			2. 注册model
+				在app下的admin.py中：
+				from app01 import models
+				
+				admin.site.register(models.Person)
+			3. 登录
+				http://127.0.0.1:8000/admin/
+			
+		
+		2. 必知必会13条
+		
+			
+		3. 单表的双下划线
+			
+		4. 外键的查询
+			# 基于对象查询
+			# 正向查询  多  ——》 一
+				book_obj.publisher # 所关联的出版社
+				
+			# 反向查询  一  ——》 多
+				外键中不指定related_name
+					pub_obj.book_set   		 # 关系管理对象
+				pub_obj.book_set.all()   # 出版社出版社的所有书籍
+				
+				外键中指定related_name ='books'
+				pub_obj.books   		 # 关系管理对象
+				pub_obj.books.all()   # 出版社出版社的所有书籍
+				
+			# 基于字段查询
+				models.Book.objects.filter(publisher__name='沙河')  #跨表
+				models.Publisher.objects.filter(book__title='二狗子的美好生活1')
+			
+	
+		5. 多对多的操作
+		
+	2. ORM进阶
+		1. 聚合和分组
+		2. F、Q、事务
+			from django.db import transaction
+
+			try:
+				with transaction.atomic():
+					# 一系列的操作
+					models.Publisher.objects.create(name='asdasdasd')
+					models.Publisher.objects.create(name='23141654')
+
+
+			except Exception as  e:
+				print(e)
+
+	3. cookie和session
+		https://www.cnblogs.com/maple-shaw/articles/9502602.html
+		cookie
+			保存在浏览器上一组组键值对，键值对是由服务器让浏览器设置的。
+			特点：
+				1. 服务器让浏览器设置
+				2. 下次访问时自动携带响应的cookie
+		django中的操作
+			1. 设置：  Set-Cookie: is_login=1; Path=/
+				普通的cookie
+				ret = redirect(reverse('app01:publisher'))  # 通过一个HttpResponse对象设置
+				ret.set_cookie('is_login', '1')
+				加密cookie
+				ret.set_signed_cookie('is_login', '1', 's25')
+				
+			2. 获取    cookie
+				普通的cookie
+				request.COOKIES  {} 
+				is_login=request.COOKIES.get('is_login')
+				加密cookie
+				request.get_signed_cookie('is_login', salt='s25', default='')
+			
+			3. 删除cookie
+				rep = redirect("/login/")
+				rep.delete_cookie("is_login")  
+		
+		session 
+			保存在服务器上一组组键值对，必须依赖于cookie
+			原因：
+				1. cookie保存在浏览器本地 不安全
+				2. cookie的大小收到限制
+				
+				request.SESSION[]=''
+
+		from django.conf import global_settings  django的默认配置
+		
+				
+
+
+
+
+3. 今日作业：
+	主机管理【03】：业务线管理
+		1. 基于django创建表：
+			用户表：ID、用户名、密码
+			业务线表：ID、名称
+			主机表：ID、主机名、密码、业务线ID
+			用户和业务线关系表：ID、业务线ID、管理员ID
+		2. 业务线管理：增删改查（多对多）
+		3. 使用模板和动态路由
+		4. 主机管理使用CBV实现
+		5. 套用BootStrap样式
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		person 主表  car 子表
+		line主表  host子表
+		publisher  book
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		

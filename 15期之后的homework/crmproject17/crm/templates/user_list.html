@@ -1,0 +1,76 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <a href="{% url 'crm:user_add' %}" class="btn btn-primary" style="margin: 10px 10px 10px 10px">添加</a>
+    <table class="table table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>序号</th>
+            <th>id</th>
+            <th>用户名称</th>
+            <th>密码</th>
+            <th>性别</th>
+            <th>部门</th>
+            <th>操作</th>
+
+        </tr>
+
+    </thead>
+    <tbody>
+        {% for user in user_all %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ user.pk }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.pwd }}</td>
+                <td>{{ user.get_gender_display}}</td>
+                <td>{{ user.dep.name }}</td>
+                <td>
+                    <a href="{% url 'crm:user_edit'  user.pk %}">
+                        <i class="fa fa-edit fa-lg"></i>
+                    </a>
+                    <a style="margin-left:5px" href="" del_id = {{ user.pk }}>
+                        <i class="fa fa-trash-o fa-lg"></i>
+                    </a>
+
+                </td>
+            </tr>
+
+
+        {% endfor %}
+
+
+    </tbody>
+    </table>
+       <nav aria-label="Page navigation">
+        <ul class="pagination">
+
+    {{ page_html }}
+
+           </ul>
+    </nav>
+{% endblock %}
+
+{% block js %}
+    <script>
+
+     $('.fa-trash-o').click(function (res) {
+         var _this = $(this);
+         $.ajax({
+             url:'/crm/user_del/'+_this.parent().attr('del_id')+'/',
+             type:'get',
+             success:function (res) {
+                 if (res.status == '200'){
+                         _this.parent().parent().parent().remove()
+                    alert('删除成功！')
+                 }
+             },
+             error:function () {
+               alert('删除失败')
+             }
+
+
+         })
+
+     })
+    </script>
+{% endblock %}

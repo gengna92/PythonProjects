@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="content-Type" charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+    {% load static %}
+
+    <link rel="stylesheet" href="/static111/plguins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static111/css/dsb.css">
+
+{#    <link rel="stylesheet" href="{% static 'plguins/bootstrap/css/bootstrap.min.css' %}">#}
+{#    <link rel="stylesheet" href="{% static 'css/dsb.css' %}">#}
+
+    <link rel="stylesheet" href="{% get_static_prefix %}">
+
+
+
+    {% block css %}
+
+    {% endblock %}
+</head>
+<body>
+
+{% include 'nav.html' %}
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+
+                <li class="{% block pub_active %}{% endblock %}"><a href="{% url 'app01:publisher' %}">出版社列表 <span
+                        class="sr-only">(current)</span></a></li>
+
+                <li class="{% block book_active %}{% endblock %}"><a href="{% url 'app01:book' %}">书籍列表</a></li>
+                <li><a href="#">Analytics</a></li>
+                <li><a href="#">Export</a></li>
+            </ul>
+
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+            {% block content %}
+
+                <h1>xxxx</h1>
+            {% endblock %}
+
+
+        </div>
+    </div>
+</div>
+
+
+{% block js %}
+
+{% endblock %}
+
+
+</body>
+</html>

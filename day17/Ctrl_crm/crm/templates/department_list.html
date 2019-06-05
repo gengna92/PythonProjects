@@ -1,0 +1,58 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <a href="{% url 'crm:add_department' %}" class="btn btn-primary">添加</a>
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>id</th>
+            <th>部门名称</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for depart in all_departs %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ depart.pk }}</td>
+                <td>{{ depart.name }}</td>
+                <td>
+                    <a href="{% url 'crm:edit_department' depart.pk %}">
+                        <i class="fa fa-edit fa-2x"></i> </a>
+                    <a del_id="{{ depart.pk }}" style="color: red"> <i class="fa fa-trash-o fa-2x"></i> </a>
+
+                </td>
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+{% endblock %}
+
+
+{% block js %}
+    <script>
+        $('.fa-trash-o').click(function () {
+            var _this = $(this);
+            $.ajax({
+                url: '/crm/department_del/' + $(this).parent().attr('del_id') + '/',
+                type: 'get',
+                success: function (res) {
+
+                   if (res.status ===0){
+                       // 找到对应的数据进行删除
+                        _this.parent().parent().parent().remove()
+                   }
+                }
+
+            })
+        })
+
+    </script>
+{% endblock %}

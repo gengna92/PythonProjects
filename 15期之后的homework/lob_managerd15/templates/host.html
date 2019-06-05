@@ -1,0 +1,43 @@
+{% extends 'showbase.html' %}
+{% block host_active %}
+   active
+{% endblock %}
+
+{% block username %}
+ {{ username }}
+{% endblock %}
+{% block content %}
+              <h3 class="sub-header">主机管理</h3>
+            <a class="btn btn-primary"  href="{% url 'hostadd' %}">添加</a>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>序号</th>
+                  <th>id</th>
+                  <th>主机名</th>
+                  <th>业务线</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                {%for host in hosts %}
+                    <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ host.id }}</td>
+                    <td>{{ host.hname }}</td>
+                     <td>
+                         {{ host.hlid.lname }}
+                     </td>
+                    <td>
+                        <a class="btn btn-danger btn-sm" href="{% url 'delete' 'host' host.id %}">删除</a>
+                        <a class="btn btn-sm btn-primary" href="{% url 'hostedit' host.id  %}">编辑</a>
+                    </td>
+                    </tr>
+                {% endfor %}
+
+              </tbody>
+            </table>
+          </div>
+
+{% endblock %}

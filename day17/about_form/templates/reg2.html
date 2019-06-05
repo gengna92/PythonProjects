@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="content-Type" charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/plguins/bootstrap/css/bootstrap.min.css">
+</head>
+<body>
+
+
+{#    {{ form_obj.as_p }}#}
+
+<div class="col-lg-8 col-lg-offset-2" style="margin-top: 70px">
+    <form class="form-horizontal" method="post" action="" novalidate>
+        {% csrf_token %}
+
+        <div class="form-group {% if form_obj.user.errors %}has-error{% endif %}">
+
+
+            <label for="{{ form_obj.user.id_for_label }}"
+                   class="col-sm-2 control-label">{{ form_obj.user.label }}</label>
+            <div class="col-sm-10">
+                {{ form_obj.user }}
+
+                <span class="help-block">{{ form_obj.user.errors.0 }}</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="{{ form_obj.pwd.id_for_label }}"
+                   class="col-sm-2 control-label">{{ form_obj.pwd.label }}</label>
+            <div class="col-sm-10">
+                {{ form_obj.pwd }}
+                {{ form_obj.pwd.errors.0 }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form_obj.re_pwd.id_for_label }}"
+                   class="col-sm-2 control-label">{{ form_obj.re_pwd.label }}</label>
+            <div class="col-sm-10">
+                {{ form_obj.re_pwd }}
+                {{ form_obj.re_pwd.errors.0 }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form_obj.gender.id_for_label }}"
+                   class="col-sm-2 control-label">{{ form_obj.gender.label }}</label>
+            <div class="col-sm-10">
+                {{ form_obj.gender }}
+                {{ form_obj.gender.errors.0 }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form_obj.hobby.id_for_label }}"
+                   class="col-sm-2 control-label">{{ form_obj.hobby.label }}</label>
+            <div class="col-sm-10">
+                {{ form_obj.hobby }}
+                {{ form_obj.hobby.errors.0 }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form_obj.phone.id_for_label }}"
+                   class="col-sm-2 control-label">{{ form_obj.phone.label }}</label>
+            <div class="col-sm-10">
+                {{ form_obj.phone }}
+                {{ form_obj.phone.errors.0 }}
+            </div>
+        </div>
+
+        <p>{{ form_obj.errors }}</p>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox"> Remember me
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Sign in</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+</body>
+</html>

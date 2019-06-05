@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+
+</head>
+<body>
+{#<form action="" method="post">#}
+    {% csrf_token %}
+    <input id='a' type="text" name="i1" value="{{ locals.a }}">+
+    <input id='b' type="text" name="i2" value="{{ locals.b }}">=
+    <input id='c' type="text" name="i3" value="{{ locals.c }}">
+    <button id="aaa">submit</button>
+
+
+    <script>
+        $('#aaa').click(function () {
+            $.ajax({
+                url:"/calc/",
+                type:'post',
+                {#headers:{'x-csrftoken':$('[name="csrfmiddlewaretoken"]').val()},#}
+                data:{
+                    csrfmiddlewaretoken: $('[name="csrfmiddlewaretoken"]').val(),
+                    v1:$('[name=i1]').val(),
+                    v2:$('[name=i2]').val(),
+
+                },
+                success:function (res) {
+                    $('[name=i3]').val(res)
+                },
+                error:function (res) {
+                    {#console.log($('[name="csrfmiddlewaretoken"]'))#}
+                    alert('123')
+                    alert($('[name="csrfmiddlewaretoken"]').val())
+
+                },
+            })
+
+        })
+    </script>
+{#</form>#}
+</body>
+</html>
+
+

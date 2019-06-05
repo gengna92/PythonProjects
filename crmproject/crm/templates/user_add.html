@@ -1,0 +1,72 @@
+{% extends 'layout.html' %}
+
+
+
+{% block content %}
+
+    <div class="col-lg-8 col-lg-offset-2" style="margin-top: 70px">
+        <form class="form-horizontal" method="post" action="" novalidate>
+            {% csrf_token %}
+
+{#        用户名#}
+            <div class="form-group {% if form_obj.name.errors %}has-error{% endif %}">
+
+
+                <label for="{{ form_obj.name.id_for_label }}"
+                       class="col-sm-2 control-label">{{ form_obj.name.label }}</label>
+                <div class="col-sm-10">
+                    {{ form_obj.name }}
+
+                    <span class="help-block">{{ form_obj.name.errors.0 }}</span>
+                </div>
+            </div>
+
+{#        密码#}
+            <div class="form-group {% if form_obj.pwd.errors %}has-error{% endif %}">
+
+
+                <label for="{{ form_obj.pwd.id_for_label }}"
+                       class="col-sm-2 control-label">{{ form_obj.pwd.label }}</label>
+                <div class="col-sm-10">
+                    {{ form_obj.pwd }}
+
+                    <span class="help-block">{{ form_obj.pwd.errors.0 }}</span>
+                </div>
+            </div>
+
+{#        性别#}
+            <div  style="height: 25px" class="form-group  {% if form_obj.gender.errors %}has-error{% endif %}">
+
+
+                <label for="{{ form_obj.gender.id_for_label }}"
+                       class="col-sm-2 control-label">{{ form_obj.gender.label }}</label>
+                <div class="col-sm-10" style="height: 30px">
+                    {{ form_obj.gender }}
+
+                    <span class="help-block">{{ form_obj.gender.errors.0 }}</span>
+                </div>
+            </div>
+
+{#        所在部门#}
+            <div class="form-group {% if form_obj.dep.errors %}has-error{% endif %}">
+
+
+                <label for="{{ form_obj.dep.id_for_label }}"
+                       class="col-sm-2 control-label">{{ form_obj.dep.label }}</label>
+                <div class="col-sm-10">
+                    {{ form_obj.dep }}
+
+                    <span class="help-block">{{ form_obj.dep.errors.0 }}</span>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary">添加</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

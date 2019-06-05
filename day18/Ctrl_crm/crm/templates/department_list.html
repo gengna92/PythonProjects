@@ -1,0 +1,100 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    {% if 'add_department' in request.session.permissions %}
+        <a href="{% url 'crm:add_department' %}" class="btn btn-primary">添加</a>
+    {% endif %}
+
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>id</th>
+            <th>部门名称</th>
+            {% if 'edit_department' in request.session.permissions or 'del_department' in request.session.permissions %}
+
+                <th>操作</th>
+
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for depart in all_departs %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ depart.pk }}</td>
+                <td>{{ depart.name }}</td>
+                {% if 'edit_department' in request.session.permissions or 'del_department' in request.session.permissions %}
+
+                    <td>
+                        {% if 'edit_department' in request.session.permissions %}
+
+                            <a href="{% url 'crm:edit_department' depart.pk %}"> <i class="fa fa-edit fa-fw"></i> </a>
+                        {% endif %}
+                        {% if 'del_department' in request.session.permissions %}
+                            <a del_id="{{ depart.pk }}" style="color: red"> <i class="fa fa-trash-o fa-fw"></i> </a>
+
+                        {% endif %}
+                    </td>
+                {% endif %}
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {#            <li>#}
+            {#                <a href="#" aria-label="Previous">#}
+            {#                    <span aria-hidden="true">&laquo;</span>#}
+            {#                </a>#}
+            {#            </li>#}
+            {#            {% for num in page_count %}#}
+            {#                <li class="active"><a  href="?page={{ num }}">{{ num }}</a></li>#}
+            {#            {% endfor %}#}
+
+            {{ page_html }}
+
+
+            {#            <li>#}
+            {#                <a href="#" aria-label="Next">#}
+            {#                    <span aria-hidden="true">&raquo;</span>#}
+            {#                </a>#}
+            {#            </li>#}
+        </ul>
+    </nav>
+
+    {#    <form action="" method="get">#}
+    {#        <input type="text" name="page">#}
+    {#        <button>跳转</button>#}
+    {#    </form>#}
+
+
+{% endblock %}
+
+
+{% block js %}
+    <script>
+        $('.fa-trash-o').click(function () {
+            var _this = $(this);
+            $.ajax({
+                url: '/crm/department_del/' + $(this).parent().attr('del_id') + '/',
+                type: 'get',
+                success: function (res) {
+
+                    if (res.status === 0) {
+                        // 找到对应的数据进行删除
+                        _this.parent().parent().parent().remove()
+                    }
+                }
+
+            })
+        })
+
+    </script>
+{% endblock %}

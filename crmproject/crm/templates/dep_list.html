@@ -1,0 +1,70 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <a href="{% url 'crm:dep_add' %}" class="btn btn-primary" style="margin: 10px 10px 10px 10px">添加</a>
+    <table class="table table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>序号</th>
+            <th>id</th>
+            <th>部门名称</th>
+            <th>操作</th>
+
+        </tr>
+
+    </thead>
+    <tbody>
+        {% for dep in dep_all %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ dep.pk }}</td>
+                <td>{{ dep.name }}</td>
+                <td>
+                    <a href="{% url 'crm:dep_edit'  dep.pk %}">
+                        <i class="fa fa-edit fa-lg"></i>
+                    </a>
+                    <a style="margin-left:5px" href="" del_id = {{ dep.pk }}>
+                        <i class="fa fa-trash-o fa-lg"></i>
+                    </a>
+
+                </td>
+            </tr>
+
+
+        {% endfor %}
+
+
+    </tbody>
+    </table>
+     <nav aria-label="Page navigation">
+        <ul class="pagination">
+
+    {{ page_html }}
+
+           </ul>
+    </nav>
+{% endblock %}
+
+{% block js %}
+    <script>
+
+     $('.fa-trash-o').click(function (res) {
+         var _this = $(this);
+         $.ajax({
+             url:'/crm/dep_del/'+_this.parent().attr('del_id')+'/',
+             type:'get',
+             success:function (res) {
+                 if (res.status == '200'){
+                         _this.parent().parent().parent().remove()
+                    alert('删除成功！')
+                 }
+             },
+             error:function () {
+               alert('删除失败')
+             }
+
+
+         })
+
+     })
+    </script>
+{% endblock %}

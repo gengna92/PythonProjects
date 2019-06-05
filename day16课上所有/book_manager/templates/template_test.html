@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="content-Type" charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+</head>
+<body>
+
+{#{{ l }}#}
+{#{{ l.1 }}#}
+{#<br>#}
+{#{{ d }}#}
+{#{{ d.name }}#}
+{#{{ d.keys }}#}
+{#<br>#}
+{#{{ person_list.0.name }}#}
+{#{{ person_list.0.age }}#}
+{#{{ person_list.0.dream }}#}
+
+
+{#{{ person_list|default:"nothing"}}#}
+{##}
+{#{{ file_size|filesizeformat }}#}
+{##}
+{#{{ l|add:person_list|length }}#}
+{##}
+{#{{l|slice:"::2"}}#}
+{#{{l|slice:"2:-2:-1"}}#}
+{##}
+{#{{ long_str|truncatechars:15}}#}
+{##}
+
+
+{#{{ now|date:'Y-m-d H:i:s' }}#}
+{#{{ now }}#}
+{##}
+{#{{ js|safe }}#}
+{#{{ a_str|safe }}#}
+
+
+{#<ul>#}
+{##}
+{#    {% for person_l in p_list %}#}
+{##}
+{#      {% for p in person_l %}#}
+{#          <li> {{ p.name }} - {{ forloop.parentloop }}</li>#}
+{##}
+{#      {% endfor %}#}
+{##}
+{##}
+{#    {% endfor %}#}
+{#</ul>#}
+
+
+{#{% for p in p_list %}#}
+{#    <li> {{ p }}</li>#}
+{#{% empty %}#}
+{#    <li>没有数据</li>#}
+{#{% endfor %}#}
+
+{#{% if 1|add:2 > 0 %}#}
+{#    真#}
+{#{% else %}#}
+{#    假#}
+{#{% endif %}#}
+
+{#{% if 10 > 5 == 1 %}#}
+{#    真#}
+{#{% else %}#}
+{#    假#}
+{#{% endif %}#}
+
+{#{{ p_list.0.0.name }}#}
+
+{% with alex=p_list.0.0.name %}
+
+    {{ alex }}
+    {{ alex }}
+    {{ alex }}
+    {{ alex }}
+    {{ alex }}
+
+{% endwith %}
+
+
+</body>
+</html>
