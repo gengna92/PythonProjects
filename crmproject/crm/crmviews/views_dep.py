@@ -7,7 +7,7 @@ from utils import pagination
 # Create your views here.
 def dep_list(request):
     dep_all = models.Department.objects.all()
-    pagination_obj = pagination.Pagination(request.GET.get('page'),dep_all.count())
+    pagination_obj = pagination.Pagination(request.GET.get('page'),dep_all.count(),per_num=5)
     return render(request,'dep_list.html',{'dep_all':dep_all[pagination_obj.start:pagination_obj.end],
                                            'page_html':pagination_obj.page_html
 

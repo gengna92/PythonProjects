@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+
+
+{% block content %}
+    <a class="btn btn-primary" href="">添加</a>
+
+    <table class="table-bordered table table-hover">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>班级名称</th>
+            <th>学费</th>
+            <th>开班日期</th>
+            <th>结业日期</th>
+            <th>班主任</th>
+            <th>任课老师</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for classes in all_class %}
+
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ classes.course }} - {{ classes.semester }} ({{ classes.school }})</td>
+                <td>{{ classes.price }}</td>
+                <td>{{ classes.start_date }}</td>
+                <td>{{ classes.graduate_date }}</td>
+                <td>{{ classes.get_teacher }}</td>
+                <td>{{ classes.show_teachers }}</td>
+                <td>
+                    <a href="{% url 'crm:class_edit' classes.pk %}"> <i class="fa fa-fw fa-edit"></i> </a>
+                    <a href=""> <i class="fa fa-fw fa-trash-o"></i> </a>
+                </td>
+            </tr>
+        {% endfor %}
+
+
+
+        </tbody>
+    </table>
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {{ page_html }}
+        </ul>
+    </nav>
+
+
+{% endblock %}

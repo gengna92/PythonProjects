@@ -3,6 +3,7 @@ from crm import  models
 from crm.forms import Dep,UserForm
 from django.http import JsonResponse
 from utils.pagination import Pagination
+from rabc.service.init_permission import init_permissions
 
 # Create your views here.
 def user_list(request):
@@ -41,3 +42,22 @@ def user_edit(request,id):
 def user_del(request,id):
     models.User.objects.get(pk=id).delete()
     return JsonResponse({'status':200,'message':'del success!'})
+
+
+
+def login(request):
+    error = ''
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        pwd = request.POST.get('password')
+        obj =  models.User.objects.filter(name=username,pwd=pwd).first()
+        if obj:
+            init_permissions(request,obj)
+            return redirect(reverse('crm:dep_list'))
+        else:
+            print(username)
+            print(pwd)
+            error = '用户名或密码错误'
+
+
+    return render(request,'login.html',{'error':error})

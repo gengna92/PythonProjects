@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crm.apps.CrmConfig',
+    'rabc.apps.RabcConfig',
 ]
 
 MIDDLEWARE = [
@@ -123,3 +124,19 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [  # 静态文件存放的路径
     os.path.join(BASE_DIR, 'static'),
 ]
+
+
+# 白名单
+WHITE_LIST = [
+    r'^/login/$',
+    r'^/admin/.*'
+
+]
+# 需要登录 但不要校验的
+NO_PERMISSION_LIST = [
+    r'^/index/$',
+
+]
+
+PERMISSION_SESSION_KEY = 'permissions'
+MENU_SESSION_KEY = 'menu'

@@ -1,0 +1,64 @@
+{% extends 'layout.html' %}
+
+
+{% block content %}
+    {% load my_tags %}
+
+    {% load rbac %}
+    {% if request|has_permission:"host_add" %}
+        <a class="btn btn-primary btn-sm" href="{% reverse_url request 'host:host_add' %}">添加</a>
+    {% endif %}
+
+
+    <table class="table-bordered table table-hover">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>Id</th>
+            <th>主机名</th>
+            <th>IP</th>
+            <th>业务线</th>
+            {% if request|has_permission:"host_edit" or request|has_permission:"host_del" %}
+                <th>操作</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for host in all_hosts %}
+
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ host.pk }}</td>
+                <td>{{ host.name }}</td>
+                <td>{{ host.ip }}</td>
+                <td>{{ host.bus_unit.name }}</td>
+                {% if request|has_permission:"host_edit" or request|has_permission:"host_del" %}
+
+                    <td>
+                        {% if request|has_permission:"host_edit" %}
+
+                            <a href="{% reverse_url request 'host:host_edit' host.pk %}"> <i
+                                    class="fa fa-fw fa-edit"></i> </a>
+                        {% endif %}
+
+                        {% if request|has_permission:"host_del" %}
+
+                            <a href="{% url 'host:host_del' host.pk %}"> <i class="fa fa-fw fa-trash-o"></i> </a>
+                        {% endif %}
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+
+
+        </tbody>
+    </table>
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {{ page_html }}
+        </ul>
+    </nav>
+
+
+{% endblock %}
